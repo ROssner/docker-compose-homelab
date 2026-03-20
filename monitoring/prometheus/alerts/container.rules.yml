@@ -1,0 +1,49 @@
+---
+groups:
+  - name: container.rules
+    rules:
+
+      - alert: ContainerDown
+        expr: absent(container_last_seen{name!=""})
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container {{ $labels.name }} is down"
+          description: "Container has not been seen for more than 1 minute"
+
+      - alert: ContainerHighCpuUsage
+        expr: (rate(container_cpu_usage_seconds_total{name!=""}[5m])) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU in container {{ $labels.name }}"
+          description: "CPU usage is {{ $value | printf \"%.2f\" }}%"
+
+      - alert: ContainerHighMemoryUsage
+        expr: (container_memory_usage_bytes{name!=""} / container_spec_memory_limit_bytes{name!=""}) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory in container {{ $labels.name }}"
+          description: "Memory usage is {{ $value | printf \"%.2f\" }}% of limit"
+
+      - alert: ContainerOOMKilled
+        expr: kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container OOM killed: {{ $labels.name }}"
+          description: "Container was killed due to out-of-memory condition"
+
+      - alert: ContainerVolumeUsageHigh
+        expr: (1 - (container_fs_inodes_free / container_fs_inodes_total)) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High volume inode usage in {{ $labels.name }}"
+          description: "Inode usage is {{ $value | printf \"%.2f\" }}%"
