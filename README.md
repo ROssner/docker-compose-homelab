@@ -5,22 +5,24 @@ A production-grade homelab infrastructure using Docker Compose, covering observa
 Designed as a local mirror of cloud-native patterns — every stack maps directly to an AWS equivalent.
 
 ## 📐 Architecture
-┌─────────────────────────────────────┐
-                │           Traefik (v3)               │
-                │   Reverse Proxy + TLS + Dashboard    │
-                └────────────┬────────────────────────┘
-                             │ traefik-public network
-      ┌──────────────────────┼──────────────────────┐
-      │                      │                      │
-┌──────▼──────┐      ┌────────▼────────┐    ┌───────▼──────┐
-│  Web Stack  │      │  Monitoring     │    │   Logging    │
-│             │      │                 │    │              │
-│ Nginx       │      │ Prometheus      │    │ Loki         │
-│ Node.js App │      │ Grafana         │    │ Promtail     │
-│ PostgreSQL  │      │ Alertmanager    │    │              │
-│ Redis       │      │ Node Exporter   │    └──────────────┘
-│ PG Exporter │      │ cAdvisor        │
-└─────────────┘      └─────────────────┘
+                         ┌───────────────────────────────────┐
+                         │           Traefik (v3)            │
+                         │  Reverse Proxy + TLS + Dashboard  │
+                         └─────────────────┬─────────────────┘
+                                           │
+                              traefik-public network
+                                           │
+        ┌──────────────────────────────────┼──────────────────────────────────┐
+        │                                  │                                  │
+┌───────▼────────┐              ┌──────────▼──────────┐             ┌────────▼─────────┐
+│    Web Stack   │              │     Monitoring      │             │     Logging      │
+├────────────────┤              ├─────────────────────┤             ├──────────────────┤
+│ Nginx          │              │ Prometheus          │             │ Loki             │
+│ Node.js App    │              │ Grafana             │             │ Promtail         │
+│ PostgreSQL     │              │ Alertmanager        │             │                  │
+│ Redis          │              │ Node Exporter       │             │                  │
+│ PG Exporter    │              │ cAdvisor            │             │                  │
+└────────────────┘              └─────────────────────┘             └──────────────────┘
 ## 🗂️ Stacks
 
 | Stack | Services | AWS Equivalent |
