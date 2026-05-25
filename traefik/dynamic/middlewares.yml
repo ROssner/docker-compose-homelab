@@ -1,0 +1,36 @@
+# -------------------------------------------------------
+# Traefik dynamic configuration — middlewares
+# -------------------------------------------------------
+
+http:
+  middlewares:
+
+    auth:
+      basicAuth:
+        users:
+          - "${TRAEFIK_DASHBOARD_USER}:${TRAEFIK_DASHBOARD_PASSWORD}"
+
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+        period: 1s
+
+    security-headers:
+      headers:
+        sslRedirect: true
+        forceSTSHeader: true
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+        permissionsPolicy: "camera=(), microphone=(), geolocation=()"
+        customResponseHeaders:
+          X-Powered-By: ""
+          Server: ""
+
+    compress:
+      compress: {}
