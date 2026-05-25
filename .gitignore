@@ -1,0 +1,7 @@
+.env
+*.log
+grafana/data/
+prometheus/data/
+loki/data/
+postgres/data/
+traefik/acme.json
