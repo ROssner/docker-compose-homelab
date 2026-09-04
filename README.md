@@ -2,7 +2,7 @@
 
 A production-grade homelab infrastructure using Docker Compose, covering observability, reverse proxy with TLS, centralized logging, and a full web application stack.
 
-Designed as a local mirror of cloud-native patterns — every stack maps directly to an AWS equivalent.
+Designed as a local mirror of cloud-native patterns every stack maps directly to an AWS equivalent.
 
 ## 📐 Architecture
                          ┌───────────────────────────────────┐
